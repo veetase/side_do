@@ -1,0 +1,61 @@
+.\" generated with Ronn/v0.7.3
+.\" http://github.com/rtomayko/ronn/tree/0.7.3
+.
+.TH "SIDE_DO" "1" "April 2014" "" ""
+.
+.SH "NAME"
+\fBside_do\fR \- a awesome tool to release game for sonkwo
+.
+.SH "DESCRIPTION"
+\fBSide Do\fR is a simple command\-line tool for making game seeds, uploading game seeds to remote servers and so on\. It does so safely and quietly, it\'s perfect for use with cron as a cron work\.
+.
+.P
+By default, \fBSide Do\fR check all games nees to be release and pack them all one by one\. \fBSide Do\fR allow us specify the game id to just do with the exact game by \-g or \-\-game_id, Before this you can use \fBside_do list\fR to list all the game and pick a game_id to do with\.
+.
+.P
+\fBSide Do\fR is also easy to configure either by yml file or command, this will be explained later\. Finally, \fBSide Do\fR allow you to extend it with ruby\.
+.
+.SH "OPTIONS"
+.
+.TP
+\fB\-a\fR, \fB\-\-all\fR
+do with all games\. this can be omitted\.
+.
+.SH "EXAMPLES"
+When you created a pre_release job on sonkwo admin web page\. $ side_do pack this will pack all games need to be released\.
+.
+.P
+Perhaps you want some of them to be packed first, or you want do them both at same time, you can first pack the game by specify its id like this:
+.
+.IP "" 4
+.
+.nf
+
+$ side_do list
+# game_id       game_name       status
+# 123           game_1          to_be_packed
+# 321           game_2          to_be_packed
+
+$ side_do pack 321
+#open another dos
+$ side_do pack 123
+.
+.fi
+.
+.IP "" 0
+.
+.P
+after packing games, you may want upload game seed to remote server\.
+.
+.IP "" 4
+.
+.nf
+
+$ side_do upload 321 \-r beijing
+
+this will upload the game to beijing remote server,if you omit the \-r option, it will upload to all sonkwo download servers\.
+.
+.fi
+.
+.IP "" 0
+

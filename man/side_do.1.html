@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' value='text/html;charset=utf8'>
+  <meta name='generator' value='Ronn/v0.7.3 (http://github.com/rtomayko/ronn/tree/0.7.3)'>
+  <title>side_do(1) - a awesome tool to release game for sonkwo</title>
+  <style type='text/css' media='all'>
+  /* style: man */
+  body#manpage {margin:0}
+  .mp {max-width:100ex;padding:0 9ex 1ex 4ex}
+  .mp p,.mp pre,.mp ul,.mp ol,.mp dl {margin:0 0 20px 0}
+  .mp h2 {margin:10px 0 0 0}
+  .mp > p,.mp > pre,.mp > ul,.mp > ol,.mp > dl {margin-left:8ex}
+  .mp h3 {margin:0 0 0 4ex}
+  .mp dt {margin:0;clear:left}
+  .mp dt.flush {float:left;width:8ex}
+  .mp dd {margin:0 0 0 9ex}
+  .mp h1,.mp h2,.mp h3,.mp h4 {clear:left}
+  .mp pre {margin-bottom:20px}
+  .mp pre+h2,.mp pre+h3 {margin-top:22px}
+  .mp h2+pre,.mp h3+pre {margin-top:5px}
+  .mp img {display:block;margin:auto}
+  .mp h1.man-title {display:none}
+  .mp,.mp code,.mp pre,.mp tt,.mp kbd,.mp samp,.mp h3,.mp h4 {font-family:monospace;font-size:14px;line-height:1.42857142857143}
+  .mp h2 {font-size:16px;line-height:1.25}
+  .mp h1 {font-size:20px;line-height:2}
+  .mp {text-align:justify;background:#fff}
+  .mp,.mp code,.mp pre,.mp pre code,.mp tt,.mp kbd,.mp samp {color:#131211}
+  .mp h1,.mp h2,.mp h3,.mp h4 {color:#030201}
+  .mp u {text-decoration:underline}
+  .mp code,.mp strong,.mp b {font-weight:bold;color:#131211}
+  .mp em,.mp var {font-style:italic;color:#232221;text-decoration:none}
+  .mp a,.mp a:link,.mp a:hover,.mp a code,.mp a pre,.mp a tt,.mp a kbd,.mp a samp {color:#0000ff}
+  .mp b.man-ref {font-weight:normal;color:#434241}
+  .mp pre {padding:0 4ex}
+  .mp pre code {font-weight:normal;color:#434241}
+  .mp h2+pre,h3+pre {padding-left:0}
+  ol.man-decor,ol.man-decor li {margin:3px 0 10px 0;padding:0;float:left;width:33%;list-style-type:none;text-transform:uppercase;color:#999;letter-spacing:1px}
+  ol.man-decor {width:100%}
+  ol.man-decor li.tl {text-align:left}
+  ol.man-decor li.tc {text-align:center;letter-spacing:4px}
+  ol.man-decor li.tr {text-align:right;float:right}
+  </style>
+</head>
+<!--
+  The following styles are deprecated and will be removed at some point:
+  div#man, div#man ol.man, div#man ol.head, div#man ol.man.
+
+  The .man-page, .man-decor, .man-head, .man-foot, .man-title, and
+  .man-navigation should be used instead.
+-->
+<body id='manpage'>
+  <div class='mp' id='man'>
+
+  <div class='man-navigation' style='display:none'>
+    <a href="#NAME">NAME</a>
+    <a href="#DESCRIPTION">DESCRIPTION</a>
+    <a href="#OPTIONS">OPTIONS</a>
+    <a href="#EXAMPLES">EXAMPLES</a>
+  </div>
+
+  <ol class='man-decor man-head man head'>
+    <li class='tl'>side_do(1)</li>
+    <li class='tc'></li>
+    <li class='tr'>side_do(1)</li>
+  </ol>
+
+  <h2 id="NAME">NAME</h2>
+<p class="man-name">
+  <code>side_do</code> - <span class="man-whatis">a awesome tool to release game for sonkwo</span>
+</p>
+
+<h2 id="DESCRIPTION">DESCRIPTION</h2>
+
+<p><strong>Side Do</strong> is a simple command-line tool for making game seeds, uploading game seeds to remote servers and so on.  It does so safely and quietly, it's perfect for use with cron as a cron work.</p>
+
+<p>By default, <code>Side Do</code> check all games nees to be release and pack them all one by one.  <code>Side Do</code> allow us specify the
+game id to just do with the exact game by -g or --game_id, Before this you can use <strong>side_do list</strong> to list all the game and pick a game_id to do with.</p>
+
+<p><code>Side Do</code> is also easy to configure either by yml file or command, this will be explained later.
+Finally, <code>Side Do</code> allow you to extend it with ruby.</p>
+
+<h2 id="OPTIONS">OPTIONS</h2>
+
+<dl>
+<dt><code>-a</code>, <code>--all</code></dt><dd>do with all games. this can be omitted.</dd>
+</dl>
+
+
+<h2 id="EXAMPLES">EXAMPLES</h2>
+
+<p>When you created a pre_release job on sonkwo admin web page.
+    $ side_do pack
+this will pack all games need to be released.</p>
+
+<p>Perhaps you want some of them to be packed first, or you want do them both at same time, you can first pack the game by specify its id like this:</p>
+
+<pre><code>$ side_do list
+# game_id       game_name       status
+# 123           game_1          to_be_packed
+# 321           game_2          to_be_packed
+
+$ side_do pack 321
+#open another dos
+$ side_do pack 123
+</code></pre>
+
+<p>after packing games, you may want upload game seed to remote server.</p>
+
+<pre><code>$ side_do upload 321 -r beijing
+
+this will upload the game to beijing remote server,if you omit the -r option, it will upload to all sonkwo download servers.
+</code></pre>
+
+
+  <ol class='man-decor man-foot man foot'>
+    <li class='tl'></li>
+    <li class='tc'>April 2014</li>
+    <li class='tr'>side_do(1)</li>
+  </ol>
+
+  </div>
+</body>
+</html>

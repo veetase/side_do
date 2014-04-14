@@ -1,0 +1,6 @@
+= side do
+
+Describe your project here
+
+:include:do.rdoc
+

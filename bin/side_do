@@ -1,0 +1,76 @@
+#!/usr/bin/env ruby
+require_relative 'game'
+require 'gli'
+include GLI::App
+config_file File.join(File.expand_path File.dirname(__FILE__) + '/side_do.rc.yaml')
+
+program_desc 'Side Do is a awesom tool to handle with sonkwo jobs, as release, upload, encrypt, and other background jobs'
+
+long_desc "make game seeds, by default, pack all game file on status status_new"
+arg_name 'game_file_id'
+command :pack do |c|
+  c.action do |global_options,options,args|
+    if args.empty?
+      game_files = GameFile.status_new.all
+    else
+      game_files = GameFile.where('id in (?)', args)
+    end
+    game_files.each{|g| g.make_seed}
+  end
+end
+
+desc 'list game files'
+command :list do |c|
+  c.desc 'specify the status of game_file to list'
+  c.arg_name 'status name'
+  c.default_value 'status_new'
+  c.flag [:s, :status]
+  c.desc 'specify how many items will show in the list'
+  c.arg_name 'number'
+  c.default_value 5
+  c.flag [:n, :number]
+  c.action do |global_options,options,args|
+    status = options[:s]
+    number = options[:n] || 5
+    if status
+      game_files = GameFile.send(status.to_sym).order('created_at DESC').limit(number)
+    else
+      game_files = GameFile.status_new.order('created_at DESC').limit(number)
+    end
+
+    game_files.each do |game_file|
+      p "#{game_file.id}  #{game_file.game.title}  #{game_file.created_at}"
+    end
+  end
+end
+
+desc 'Describe upload here'
+arg_name 'Describe arguments to upload here'
+command :upload do |c|
+  c.action do |global_options,options,args|
+    puts "upload command ran"
+  end
+end
+
+pre do |global,command,options,args|
+  # Pre logic here
+  # Return true to proceed; false to abort and not call the
+  # chosen command
+  # Use skips_pre before a command to skip this block
+  # on that command only
+  true
+end
+
+post do |global,command,options,args|
+  # Post logic here
+  # Use skips_post before a command to skip this
+  # block on that command only
+end
+
+on_error do |exception|
+  # Error logic here
+  # return false to skip default error handling
+  true
+end
+
+exit run(ARGV)

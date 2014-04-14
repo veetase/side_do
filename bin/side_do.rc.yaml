@@ -1,0 +1,25 @@
+---
+:adapter: mysql2
+:host: 'your host'
+:port: 3306
+:database: example_database
+:username: username
+:password: password
+:release_tool: "F:/Bin_ReleaseTool/DownloadReleaseTool.exe"
+:files_root_dir: "C:/P2PDownload"
+:file_meta_dir: "C:/P2PDownload/Meta"
+g: nil
+:g: nil
+game_id: nil
+:game_id: nil
+a: false
+:a: false
+auto: false
+:auto: false
+help: false
+:help: false
+commands:
+  :_doc: {}
+  :pack: {}
+  :upload: {}
+  :list: {}
