@@ -1,15 +1,16 @@
 require 'active_record'
 require 'mysql2'
+require 'open3'
 yml_path = File.join(ENV['HOME'], '.side_do.rc.yaml')
 raise "could not find your config file in #{yml_path}, please make it first" unless File.exist?(yml_path)
 
-config = YAML.load_file(yml_path)
+$config = YAML.load_file(yml_path)
 ActiveRecord::Base.establish_connection(
-  adapter:  config[:adapter],
-  host:     config[:host],
-  database: config[:database],
-  username: config[:username],
-  password: config[:password]
+  adapter:  $config[:adapter],
+  host:     $config[:host],
+  database: $config[:database],
+  username: $config[:username],
+  password: $config[:password]
 )
 
 class Game < ActiveRecord::Base
@@ -32,7 +33,7 @@ class GameFile < ActiveRecord::Base
 
   def make_seed
     raise 'this game have not been preleased' if self.status != STATUS_NEW
-    puts "----- Start PreReleaseWorker"
+    puts "-#{$config[:files_root_dir]}---- Start PreReleaseWorker"
     err = nil
 
     self.process_start_time = Time.now
@@ -43,15 +44,15 @@ class GameFile < ActiveRecord::Base
     game_name = game.dir_name
     parent_cmd = nil
 
-    if game.parent_id
+    if game.parent_id && game.parent_id.to_i != 0
       parent_game = Game.find(game.parent_id)
       parent_cmd = "--parent_id=#{game.parent_id} --parent_name=\"#{parent_game.dir_name}\""
     end
 
     puts "Processing game #{game_id} - #{game.dir_name}..."
     release_tool_path = File.expand_path File.dirname(__FILE__) + '/DownloadReleaseTool.exe'
-    cmd = "#{release_tool_path} --game_id=#{game_id} --game_name= '#{game_name}' --game_dir= '#{game_name}' --patch_ver=#{self.patch_ver} --release_dir='#{self.file_dir}' --work_dir= '#{config[:files_root_dir]}' #{parent_cmd}"
-
+    cmd = "#{$config[:release_tool]} --game_id=#{game_id} --game_name=\"#{game_name}\" --game_dir=\"#{game_name}\" --patch_ver=#{self.patch_ver} --release_dir=\"#{self.file_dir}\" --work_dir=\"#{$config[:files_root_dir]}\" #{parent_cmd}"
+    puts cmd
     output = ""
     stdin, stdoe = Open3.popen2e("#{cmd}")
     stdin.close
@@ -75,9 +76,9 @@ class GameFile < ActiveRecord::Base
       puts "verifying the digest..."
       seed_content_path = nil
       if self.file_dir == "initial"
-        seed_content_path = config[:file_meta_dir] + "/#{game.dir_name}.mf"
+        seed_content_path = $config[:file_meta_dir] + "/#{game.dir_name}.mf"
       else
-        seed_content_path = config[:file_meta_dir] + "/#{game.dir_name}_patch_#{self.patch_ver}.mf"
+        seed_content_path = $config[:file_meta_dir] + "/#{game.dir_name}_patch_#{self.patch_ver}.mf"
       end
 
       seed_content = nil
