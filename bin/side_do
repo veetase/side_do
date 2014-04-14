@@ -2,8 +2,6 @@
 require_relative 'game'
 require 'gli'
 include GLI::App
-config_file File.join(File.expand_path File.dirname(__FILE__) + '/side_do.rc.yaml')
-
 program_desc 'Side Do is a awesom tool to handle with sonkwo jobs, as release, upload, encrypt, and other background jobs'
 
 long_desc "make game seeds, by default, pack all game file on status status_new"
@@ -39,7 +37,7 @@ command :list do |c|
     end
 
     game_files.each do |game_file|
-      p "#{game_file.id}  #{game_file.game.title}  #{game_file.created_at}"
+      p "#{game_file.id}  #{game_file.game.alias_name}  #{game_file.created_at}"
     end
   end
 end

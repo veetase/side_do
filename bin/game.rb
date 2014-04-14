@@ -1,6 +1,9 @@
 require 'active_record'
 require 'mysql2'
-config = YAML.load_file(File.expand_path File.dirname(__FILE__) + '/side_do.rc.yaml')
+yml_path = File.join(ENV['HOME'], '.side_do.rc.yaml')
+raise "could not find your config file in #{yml_path}, please make it first" unless File.exist?(yml_path)
+
+config = YAML.load_file(yml_path)
 ActiveRecord::Base.establish_connection(
   adapter:  config[:adapter],
   host:     config[:host],
