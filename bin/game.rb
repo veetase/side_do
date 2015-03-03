@@ -1,6 +1,7 @@
 require 'active_record'
 require 'mysql2'
 require 'open3'
+require 'yaml'
 yml_path = File.join(ENV['HOME'], '.side_do.rc.yaml')
 raise "could not find your config file in #{yml_path}, please make it first" unless File.exist?(yml_path)
 
@@ -14,6 +15,7 @@ ActiveRecord::Base.establish_connection(
 )
 
 class Game < ActiveRecord::Base
+  self.inheritance_column = :something_diffrent_from_type # here dont use single talbe inheri..
   has_many :game_files
 end
 
